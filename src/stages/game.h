@@ -1,12 +1,12 @@
 #pragma once
-#import "stage.h"
-#import "../utils/font.h"
-#import "../utils/theme.h"
-#import "../game/hand.h"
-#import "../game/enemy.h"
-#import "../game/map.h"
-#import "../actions/cycle.h" // Progress map cycle (not actually used here -> remove)
-#import "../actions/play.h"  // Play card function
+#include "stage.h"
+#include "../utils/font.h"
+#include "../utils/theme.h"
+#include "../game/hand.h"
+#include "../game/enemy.h"
+#include "../game/map.h"
+#include "../actions/cycle.h" // Progress map cycle (not actually used here -> remove)
+#include "../actions/play.h"  // Play card function
 
 // Game data (state, loaded textures etc...)
 // NOTE: UPDATE IN PLAY.C!

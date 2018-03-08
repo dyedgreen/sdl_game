@@ -1,11 +1,14 @@
 # This will build the simple SDL game
 SOURCES=$(wildcard ./src/**/*.c ./src/*.c)
-PNGASSETS=$(wildcard ./assets/*.png ./assets/**/*.png ./assets/**/**/*.png)
+PNGASSETS=$(wildcard ./assets/*.png ./assets/**/*.png)
 BMPTARGETS=$(patsubst %.png,%.bmp,$(PNGASSETS))
 PREPASSETS=
 REMASSETS=
 LIBS=-framework SDL2
 CC=gcc
+
+OSFILES=$(wildcard .DS_Store ./src/.DS_Store ./src/**/.DS_Store ./assets/.DS_Store ./assets/**/.DS_Store)
+RMOSFILES=
 
 # Simple switch between macOS / Linux TODO: Support windows builds
 UNAME_S := $(shell uname -s)
@@ -18,6 +21,12 @@ ifeq ($(PNGASSETS),)
 else
 	PREPASSETS= $(foreach var,$(PNGASSETS),magick $(var) $(patsubst %.png,%.bmp,$(var));)
 	REMASSETS=rm $(PNGASSETS)
+endif
+
+# Decide if os files need to be cleared
+ifeq ($(OSFILES),)
+else
+	REMOSFILES= $(foreach var,$(OSFILES),rm $(var);)
 endif
 
 all: clean
@@ -44,3 +53,4 @@ prepassets:
 clean:
 	rm -r ./bin/
 	@mkdir ./bin/
+	$(REMOSFILES)

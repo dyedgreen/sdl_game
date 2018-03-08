@@ -1,6 +1,6 @@
 #pragma once
 #include "hand.h"
-#import "../actions/play.h"
+#include "../actions/play.h"
 #include "../frameworks.h"
 
 typedef struct {

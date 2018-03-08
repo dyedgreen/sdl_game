@@ -24,6 +24,24 @@ Hand* createHand(SDL_Renderer* renderer, int (*play)(int, void*)) {
     return NULL;
   }
   hand->play = play;
+  // Load the sound effects
+  if (
+    SDL_LoadWAV("assets/audio/card_draw.wav", &hand->wav_spec[0], &hand->wav_buffer[0], &hand->wav_length[0]) == NULL ||
+    SDL_LoadWAV("assets/audio/card_place.wav", &hand->wav_spec[1], &hand->wav_buffer[1], &hand->wav_length[1]) == NULL ||
+    SDL_LoadWAV("assets/audio/card_shove.wav", &hand->wav_spec[2], &hand->wav_buffer[2], &hand->wav_length[2]) == NULL
+  ) {
+    // Failed to load audio
+    destroyHand(hand);
+    return NULL;
+  }
+  // Open the audio device
+  hand->wav_spec[0].callback = NULL;
+  hand->audio_device = SDL_OpenAudioDevice(NULL, 0, &hand->wav_spec[0], &hand->audio_device_spec, 0);
+  if (hand->audio_device == 0) {
+    // Failed to open device
+    destroyHand(hand);
+    return NULL;
+  }
   // Set all initial values
   hand->card_hovered = -1;
   hand->card_selected = -1;
@@ -43,6 +61,12 @@ void destroyHand(Hand* hand) {
   }
   // Destroy the deck
   destroyDeck(hand->deck);
+  // Destroy the audio
+  SDL_FreeWAV(hand->wav_buffer[0]);
+  SDL_FreeWAV(hand->wav_buffer[1]);
+  SDL_FreeWAV(hand->wav_buffer[2]);
+  // Close the device
+  SDL_CloseAudioDevice(hand->audio_device);
   // Free the hand
   free(hand);
 }
@@ -76,6 +100,18 @@ int getMinFollowDistance(Hand* hand) {
     }
   }
   return distance;
+}
+
+typedef enum {
+  Draw = 0,
+  Place = 1,
+  Shove = 2,
+} HandSoundEffect;
+void playSoundEffect(Hand* hand, HandSoundEffect effect) {
+  // Determine if device is paused
+  if (SDL_GetAudioDeviceStatus(hand->audio_device) == SDL_AUDIO_PLAYING) {
+    SDL_QueueAudio(hand->audio_device, hand->wav_buffer[effect], hand->wav_length[effect]);
+  }
 }
 
 // Render the hand into the target, obeying all rules set by the current state
@@ -246,6 +282,11 @@ void renderHand(SDL_Renderer* renderer, Hand* hand, SDL_Rect target, int frame) 
   hand->card_hovered = card_hovered;
 }
 
+void pauseHandSound(Hand* hand, int is_paused) {
+  // Play / Pause audio
+  SDL_PauseAudioDevice(hand->audio_device, is_paused == 0 ? 0 : 1);
+}
+
 void updateHand(Hand* hand, SDL_Event* e, void* payload) {
   // Select / Unselect / Play cards on mouse events
   if (e->type == SDL_MOUSEBUTTONUP) {
@@ -268,9 +309,13 @@ void updateHand(Hand* hand, SDL_Event* e, void* payload) {
           discardCards(hand, hand->deck->cards[hand->card_selected]->cost - 1);
           // Deselect the card
           hand->card_selected = -1;
+          // Play sound effect
+          playSoundEffect(hand, Place);
         } else {
           // Play unsuccessful, deselect the card
           hand->card_selected = -1;
+          // Play sound effect
+          playSoundEffect(hand, Shove);
         }
       } else if (hand->card_hovered != -1) {
         // Select the hovered card
@@ -278,6 +323,9 @@ void updateHand(Hand* hand, SDL_Event* e, void* payload) {
       }
     } else {
       // Right click (deselect card, if selected)
+      if (hand->card_selected != -1) {
+        playSoundEffect(hand, Shove);
+      }
       hand->card_selected = -1;
     }
   }
@@ -291,7 +339,11 @@ void fillHand(Hand* hand, int full_count) {
       card_count ++;
     }
   }
-  // Add random cards that are not in the han
+  // Play the sound effect
+  if (card_count < full_count) {
+    //playSoundEffect(hand, Draw);
+  }
+  // Add random cards that are not in the hand
   for (int i = 0; card_count < full_count && i < 1000; i++) {
     if (
       !hand->deck->card_used[i % lengthof(hand->deck->cards)] &&
@@ -325,6 +377,10 @@ void drawCards(Hand* hand, int count) {
       hand->card_hover_progress[i % lengthof(hand->deck->cards)] = -100;
       added_count ++;
     }
+  }
+  // Play the sound
+  if (added_count > 0) {
+    //playSoundEffect(hand, Draw);
   }
 }
 void discardCards(Hand* hand, int count) {

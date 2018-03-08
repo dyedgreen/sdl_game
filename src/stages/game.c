@@ -1,5 +1,8 @@
 #import "game.h"
 
+// Game constants
+#define GAME_PLAYER_COUNT 2
+#define GAME_CARDS_DRAW_COUNT 4
 
 // Function declarations for the game functions
 void gameUpdate(Scene* scene, int frame);
@@ -33,10 +36,11 @@ Stage* createGameStage(void (*replace)(int), SDL_Window* window, SDL_Renderer* r
     destroyGameStage(stage);
     return NULL;
   }
-  // Play music FIXME: Enable
+  // Play music and sounds FIXME: Enable
   //pauseTheme(game_data->theme, 0);
+  pauseHandSound(game_data->hand, 0);
   // Setup player hand NOTE: Do here?
-  fillHand(game_data->hand, 4); // NOTE: Re-think
+  fillHand(game_data->hand, GAME_CARDS_DRAW_COUNT); // NOTE: Re-think
   drawCard(game_data->hand, DECK_LENGTH - 1); // NOTE: DANGER!!! This is the new-turn, has to be at end of deck!
   // Return the finished game stage
   return stage;
@@ -83,6 +87,22 @@ void gameUpdate(Scene* scene, int frame) {
     scrollMap(game_data->map, 0, 1);
   }
 
+  /* DETERMINE PLAYER TURN */
+  int current_player = game_data->year % GAME_PLAYER_COUNT;
+  // Perform enemy player turns
+  if (current_player != 0) {
+    // Advance the enemy player turn
+    if (!advanceEnemyTurn(game_data->enemy_turn, game_data->hand, game_data)) {
+      // Turn changes, play end of turn card (NOTE: Is card type 1)
+      actionPlayCard(1, current_player, game_data);
+      // If the human player is next, draw a new hand
+      if ((current_player + 1) % GAME_PLAYER_COUNT == 0) {
+        reshuffleHand(game_data->hand, GAME_CARDS_DRAW_COUNT);
+        drawCard(game_data->hand, DECK_LENGTH - 1);
+      }
+    }
+  }
+
   /* RENDER STUFF */
   // Clear the window
   SDL_SetRenderDrawColor(scene->renderer, 255, 255, 255, 1);
@@ -103,6 +123,10 @@ void gameUpdate(Scene* scene, int frame) {
     .y = window_h * 5 / 6,
   };
   renderHand(scene->renderer, game_data->hand, hand_target, frame);
+  // Render the enemy turn TODO (figure out ui + set target)
+  if (current_player != 0) {
+    renderEnemyTurn(scene->renderer, game_data->enemy_turn, game_data->hand, hand_target, frame);
+  }
 
   // Highlight the current tile, if card is selected
   if (game_data->hand->card_selected != -1) {

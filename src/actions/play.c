@@ -29,8 +29,6 @@ int actionCanPlayCard(int card_type, int player, void* game_data_payload) {
   switch ((CardType)card_type) {
     // DEBUG
     case Debug:
-      // Can build a road? --> NOTE: LAAAGS!
-      return findMapRoad(game_data->map, game_data->map->tile_hovered, 830, 10);
       return 1;
       break;
     // END TURN CARD
@@ -78,16 +76,13 @@ int actionPlayCard(int card_type, int player, void* game_data_payload) {
   switch ((CardType)card_type) {
     // DEBUG
     case Debug:
-      // Build a road!
-      return createMapRoad(game_data->map, game_data->map->tile_hovered, 830, 10);
+      // Does nothing...
       break;
     // END TURN CARD
     case EndTurn:
+      // Discard all cards, update the map cycle (grows crops etc.)
+      reshuffleHand(game_data->hand, 0);
       game_data->year = actionUpdateMapCycle(game_data->map, game_data->year);
-      // TODO: Do this when the enemy is done
-      reshuffleHand(game_data->hand, 4);
-      drawCard(game_data->hand, DECK_LENGTH - 1);
-      //return 0; // Actually it did play, but we want to keep the card! (Maybe change later with AI enemies...)
       break;
     // SETTLERS CARD
     case Settlers: {
