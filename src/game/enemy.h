@@ -3,12 +3,14 @@
 #include "../actions/play.h"
 #include "../frameworks.h"
 
+#define ENEMY_TURN_CARDS 3 // Max number of cards to be played
+
 typedef struct {
   int player;
-  int cards_played;
-  int current_card;
+  int cards_played[ENEMY_TURN_CARDS];
+  int current_card; // index in cards_played (goes 0->N)
   int current_anim;
-  int current_tile;
+  int current_exit_anim;
 } EnemyTurn;
 
 EnemyTurn* createEnemyTurn();

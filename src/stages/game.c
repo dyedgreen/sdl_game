@@ -100,6 +100,8 @@ void gameUpdate(Scene* scene, int frame) {
         reshuffleHand(game_data->hand, GAME_CARDS_DRAW_COUNT);
         drawCard(game_data->hand, DECK_LENGTH - 1);
       }
+      // Reset the enemy turn (initial reset is done during allocation)
+      resetEnemyTurn(game_data->enemy_turn, current_player + 1 == GAME_PLAYER_COUNT ? 1 : current_player + 1);
     }
   }
 
@@ -125,7 +127,7 @@ void gameUpdate(Scene* scene, int frame) {
   renderHand(scene->renderer, game_data->hand, hand_target, frame);
   // Render the enemy turn TODO (figure out ui + set target)
   if (current_player != 0) {
-    renderEnemyTurn(scene->renderer, game_data->enemy_turn, game_data->hand, hand_target, frame);
+    renderEnemyTurn(scene->renderer, game_data->enemy_turn, game_data->hand, map_target, frame);
   }
 
   // Highlight the current tile, if card is selected

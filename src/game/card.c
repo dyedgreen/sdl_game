@@ -26,12 +26,12 @@ Card* createCard(SDL_Renderer* renderer, char* picture, int anim_speed, char* ti
     card->body_len ++;
   }
   // Create the title and body fonts
-  Font* title_font = createFont(renderer, 2, 0, 0, 0);
-  Font* body_font = createFont(renderer, 1, 0, 0, 0);
+  Font* title_font = createFont(renderer, 2, 218, 212, 94);
+  Font* body_font = createFont(renderer, 1, 255, 175, 60);
   // Load the card picture and back texture
   SDL_Surface* card_picture_bitmap = SDL_LoadBMP(picture);
   SDL_Texture* card_picture_texture = SDL_CreateTextureFromSurface(renderer, card_picture_bitmap);
-  SDL_Surface* card_back_bitmap = SDL_LoadBMP("assets/misc/card.bmp");
+  SDL_Surface* card_back_bitmap = SDL_LoadBMP("assets/misc/card_dark.bmp");
   SDL_Texture* card_back_texture = SDL_CreateTextureFromSurface(renderer, card_back_bitmap);
   SDL_Texture* card_target_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_UNKNOWN, SDL_TEXTUREACCESS_TARGET, card_picture_bitmap->w, card_picture_bitmap->h);
   // Test if everything could be created
@@ -72,9 +72,11 @@ Card* createCard(SDL_Renderer* renderer, char* picture, int anim_speed, char* ti
     .y = 0,
   };
   SDL_Rect target_rect = src_rect;
-  SDL_Rect title_box_rect = {.w = 100, .h = 16, .x = 10, .y = 9};
+  // SDL_Rect title_box_rect = {.w = 100, .h = 16, .x = 10, .y = 9}; // Light
+  SDL_Rect title_box_rect = {.w = 100, .h = 16, .x = 10, .y = 10}; // Dark
   SDL_Rect body_box_rect = {.w = 100, .h = 60, .x = 10, .y = 101};
-  SDL_Rect cost_box_rect = {.w = 20, .h = 16, .x = 99, .y = 156}; // Adjust to final texture
+  // SDL_Rect cost_box_rect = {.w = 20, .h = 16, .x = 99, .y = 156}; // Light
+  SDL_Rect cost_box_rect = {.w = 20, .h = 16, .x = 97, .y = 149}; // Dark
   char cost_string[1] = {'0'+card->cost};
   // Render the card backs and text
   for (int i = 0; i < card->sprite->frame_count; i ++) {
