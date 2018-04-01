@@ -43,7 +43,7 @@ Stage* createGameStage(void (*replace)(int), SDL_Window* window, SDL_Renderer* r
   pauseHandSound(game_data->hand, 0);
   // Setup player hand NOTE: Do here?
   fillHand(game_data->hand, GAME_CARDS_DRAW_COUNT); // NOTE: Re-think
-  drawCard(game_data->hand, DECK_LENGTH - 1); // NOTE: DANGER!!! This is the new-turn, has to be at end of deck!
+  drawCard(game_data->hand, DECK_CARD_END_TURN);
   // Return the finished game stage
   return stage;
 }
@@ -101,7 +101,7 @@ void gameUpdate(Scene* scene, int frame) {
       // If the human player is next, draw a new hand
       if ((current_player + 1) % GAME_PLAYER_COUNT == 0) {
         reshuffleHand(game_data->hand, GAME_CARDS_DRAW_COUNT);
-        drawCard(game_data->hand, DECK_LENGTH - 1);
+        drawCard(game_data->hand, DECK_CARD_END_TURN);
       }
       // Reset the enemy turn (initial reset is done during allocation)
       resetEnemyTurn(game_data->enemy_turn, current_player + 1 == GAME_PLAYER_COUNT ? 1 : current_player + 1);

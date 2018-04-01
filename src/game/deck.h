@@ -3,6 +3,7 @@
 #include "../frameworks.h"
 
 #define DECK_LENGTH 6
+#define DECK_CARD_END_TURN (DECK_LENGTH - 1)
 
 typedef struct {
   Card* cards[DECK_LENGTH];
