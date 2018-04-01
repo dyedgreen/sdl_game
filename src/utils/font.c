@@ -341,3 +341,8 @@ void renderAlignedText(Font* font, FontAlignment alignment, SDL_Rect type_case, 
     }
   }
 }
+
+// Find hight necessary to render given text length
+int renderTextRequiredHeight(Font* font, int width, int char_count) {
+  return (4 * font->size * char_count / width + 1) * 6 * font->size;
+}

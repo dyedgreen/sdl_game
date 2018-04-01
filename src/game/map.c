@@ -476,7 +476,7 @@ int createMapRoad(Map* map, int start, int end, int length) {
       // Set the new tiles and test if its the end
       previous_tile = current_tile;
       current_tile = neighbour;
-      if (current_tile == end) {
+      if (current_tile == end && (best_distance > j || best_distance == -1)) {
         best_path = i;
         best_distance = j;
         break;

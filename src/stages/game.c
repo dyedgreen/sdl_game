@@ -3,6 +3,7 @@
 // Game constants
 #define GAME_PLAYER_COUNT 2
 #define GAME_CARDS_DRAW_COUNT 4
+#define GAME_YEAR_ZERO 1431
 
 // Function declarations for the game functions
 void gameUpdate(Scene* scene, int frame);
@@ -27,12 +28,13 @@ Stage* createGameStage(void (*replace)(int), SDL_Window* window, SDL_Renderer* r
   GameData* game_data = (GameData*)stage->scene->data;
   // Do the game stage setup
   game_data->font = createFont(renderer, 2, 255, 0, 255); // DEBUG
+  game_data->ui = createUi(renderer);
   game_data->theme = createTheme("assets/audio/curse_of_the_scarab.wav");
   game_data->hand = createHand(renderer, &playCard); // NOTE: Used by player and enemy!
   game_data->enemy_turn = createEnemyTurn();
   game_data->map = createMap(renderer, 40, 60);
   game_data->year = 0;
-  if (game_data->font == NULL || game_data->theme == NULL || game_data->hand == NULL || game_data->enemy_turn == NULL || game_data->map == NULL) {
+  if (game_data->font == NULL || game_data->ui == NULL || game_data->theme == NULL || game_data->hand == NULL || game_data->enemy_turn == NULL || game_data->map == NULL) {
     destroyGameStage(stage);
     return NULL;
   }
@@ -53,6 +55,7 @@ void destroyGameStage(Stage* stage) {
   GameData* game_data = (GameData*)stage->scene->data;
   // Free all memory occupied by the game scene
   destroyFont(game_data->font);
+  destroyUi(game_data->ui);
   destroyTheme(game_data->theme);
   destroyHand(game_data->hand);
   destroyEnemyTurn(game_data->enemy_turn);
@@ -117,6 +120,14 @@ void gameUpdate(Scene* scene, int frame) {
     .y = 0,
   };
   renderMap(scene->renderer, game_data->map, map_target);
+  // Render the ui FIXME: Add actual quest system here!
+  game_data->ui->window.w = window_w;
+  game_data->ui->window.h = window_h;
+  renderUiQuest(game_data->ui, Warning, "Hello World!", "Quest 1/5\n\nThis is your first quest. Play all the cards in your hand to progress 10 years!\0", game_data->year * 10);
+  SDL_Rect ui_year_position = { .x = scaleUiLength(game_data->ui, UI_QUEST_PADDING), .y = scaleUiLength(game_data->ui, UI_QUEST_PADDING) };
+  char ui_year_text[] = "____\0";
+  sprintf(ui_year_text, "%d", game_data->year + GAME_YEAR_ZERO);
+  renderUiLabel(game_data->ui, ui_year_position, ui_year_text);
   // Render the hand
   SDL_Rect hand_target = {
     .w = window_w,
@@ -174,21 +185,34 @@ void gameUpdate(Scene* scene, int frame) {
   loopTheme(game_data->theme);
 
   /* THESE ARE TESTS / DEBUG STUFF */
+  // Render some test ui elements
+  // SDL_Rect ui_test = { .w = 0, .h = 0, .x = 100, .y = 200 };
+  // char* ui_text = "Play\0";
+  // game_data->ui->window.w = window_w;
+  // game_data->ui->window.h = window_h;
+  // renderUiBigButton(game_data->ui, ui_test, Select, ui_text);
+  // ui_test.x += 200;
+  // ui_test.w = 300;
+  // renderUiProgress(game_data->ui, ui_test, Blue, 100 * frame / 60);
+  // ui_test.h = 250;
+  // ui_test.x += 310;
+  // ui_test = renderUiBox(game_data->ui, ui_test);
+  // renderUiIcon(game_data->ui, ui_test, Warning);
   // Set surrounding tiles to be highlighted
   //game_data->map->tile_highlighted = findMapTileNeighbour(game_data->map, frame / 10 % 6, game_data->map->tile_hovered);
   //game_data->map->tile_highlighted = game_data->map->tile_hovered;
   // Render max outline
   SDL_SetRenderDrawColor(scene->renderer, 255, 0, 255, 1);
   //SDL_RenderDrawRect(scene->renderer, &map_target);
-  // Test render some text (TODO: Maybe do some debug text here later?)
+  // Draw some debug information
   SDL_Rect text_box = {
     .w = 4 * 2 * 30,
     .h = 6 * 2 * 5,
     .x = 5,
-    .y = 5,
+    .y = window_h - 6 * 2 * 5 - 5,
   };
   int current_tile = game_data->map->tile_hovered;
-  char text[] = "Current tile: _____\n     (frame: __, year:____)";
+  char text[] = "Current tile: _____\n     (frame: __, year:____,\nplayer: _)";
   text[14] = '0' + current_tile / 10000 % 10;
   text[15] = '0' + current_tile / 1000 % 10;
   text[16] = '0' + current_tile / 100 % 10;
@@ -200,6 +224,7 @@ void gameUpdate(Scene* scene, int frame) {
   text[43] = '0' + game_data->year / 100 % 10;
   text[44] = '0' + game_data->year / 10 % 10;
   text[45] = '0' + game_data->year % 10;
+  text[56] = '0' + current_player % 10;
   SDL_SetRenderDrawColor(scene->renderer, 255, 0, 255, 1);
   SDL_RenderDrawRect(scene->renderer, &text_box);
   renderText(game_data->font, text_box, sizeof(text) / sizeof(char), text);

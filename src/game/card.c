@@ -26,7 +26,7 @@ Card* createCard(SDL_Renderer* renderer, char* picture, int anim_speed, char* ti
     card->body_len ++;
   }
   // Create the title and body fonts
-  Font* title_font = createFont(renderer, 2, 218, 212, 94);
+  Font* title_font = createFont(renderer, 2, 238, 232, 124);
   Font* body_font = createFont(renderer, 1, 255, 175, 60);
   // Load the card picture and back texture
   SDL_Surface* card_picture_bitmap = SDL_LoadBMP(picture);
@@ -73,7 +73,7 @@ Card* createCard(SDL_Renderer* renderer, char* picture, int anim_speed, char* ti
   };
   SDL_Rect target_rect = src_rect;
   // SDL_Rect title_box_rect = {.w = 100, .h = 16, .x = 10, .y = 9}; // Light
-  SDL_Rect title_box_rect = {.w = 100, .h = 16, .x = 10, .y = 10}; // Dark
+  SDL_Rect title_box_rect = {.w = 100, .h = 16, .x = 10, .y = 11}; // Dark
   SDL_Rect body_box_rect = {.w = 100, .h = 60, .x = 10, .y = 101};
   // SDL_Rect cost_box_rect = {.w = 20, .h = 16, .x = 99, .y = 156}; // Light
   SDL_Rect cost_box_rect = {.w = 20, .h = 16, .x = 97, .y = 149}; // Dark

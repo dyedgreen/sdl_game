@@ -8,6 +8,7 @@
 #include "../game/enemy.h"
 #include "../game/map.h"
 #include "../utils/font.h"
+#include "../utils/ui.h"
 #include "../utils/theme.h"
 
 

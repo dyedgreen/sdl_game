@@ -15,6 +15,7 @@ typedef enum {
 } CardType;
 typedef struct {
   Font* font;
+  Ui* ui;
   Theme* theme;
   Hand* hand;
   EnemyTurn* enemy_turn;

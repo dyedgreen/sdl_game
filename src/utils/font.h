@@ -3,7 +3,7 @@
 
 // Font to be rendered
 typedef struct {
-  int size;
+  int size; // Base size: 4x6 (WxH)
   uint color_r;
   uint color_g;
   uint color_b;
@@ -25,6 +25,8 @@ void destroyFont(Font* font);
 void renderText(Font* font, SDL_Rect type_case, int char_count, char text[]);
 // Render a string with alignment (slower than renderText)
 void renderAlignedText(Font* font, FontAlignment alignment, SDL_Rect type_case, int char_count, char text[]);
+// Find height necessary to render given text length
+int renderTextRequiredHeight(Font* font, int width, int char_count);
 
 /**
 * Supported Features:

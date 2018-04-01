@@ -1,6 +1,7 @@
 #pragma once
 #include "stage.h"
 #include "../utils/font.h"
+#include "../utils/ui.h"
 #include "../utils/theme.h"
 #include "../game/hand.h"
 #include "../game/enemy.h"
@@ -12,6 +13,7 @@
 // NOTE: UPDATE IN PLAY.C!
 typedef struct {
   Font* font;
+  Ui* ui;
   Theme* theme;
   Hand* hand;
   EnemyTurn* enemy_turn;
