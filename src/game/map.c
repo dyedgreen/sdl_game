@@ -30,11 +30,6 @@ void generateMap(TileType* map_prototype[], int width, int height) {
       );
     }
   }
-
-  // NOTE: Old completely random map...
-  // for (int i = 0; i < width*height; i++) {
-  //   (*map_prototype)[i] = (TileType)(rand() % 33);
-  // }
 }
 
 // Create a map

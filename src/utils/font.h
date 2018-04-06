@@ -25,7 +25,7 @@ void destroyFont(Font* font);
 void renderText(Font* font, SDL_Rect type_case, int char_count, char text[]);
 // Render a string with alignment (slower than renderText)
 void renderAlignedText(Font* font, FontAlignment alignment, SDL_Rect type_case, int char_count, char text[]);
-// Find height necessary to render given text length
+// Find height necessary to render given text length (NOTE: This is an approximation)
 int renderTextRequiredHeight(Font* font, int width, int char_count);
 
 /**

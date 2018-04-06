@@ -26,7 +26,7 @@ Deck* createDeck(SDL_Renderer* renderer) {
     "Test 4", "This card ends the turn.",
     0, 1, 0);
   deck->cards[4] = createCard(renderer,
-    "assets/cards/test_card_2.bmp", 5,
+    "assets/cards/test_card_anim.bmp", 5,
     "Assasin",
     "This card ends the turn.",
     0, 1, 0);
