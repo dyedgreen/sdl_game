@@ -10,6 +10,8 @@ CC=gcc
 OSFILES=$(wildcard .DS_Store ./src/.DS_Store ./src/**/.DS_Store ./assets/.DS_Store ./assets/**/.DS_Store)
 RMOSFILES=
 
+RMOLDBUILDS=
+
 # Simple switch between macOS / Linux TODO: Support windows builds
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
@@ -27,6 +29,11 @@ endif
 ifeq ($(OSFILES),)
 else
 	REMOSFILES= $(foreach var,$(OSFILES),rm $(var);)
+endif
+
+# Decide if old builds need to be cleared
+ifneq ($(wildcard ./bin/.),)
+	RMOLDBUILDS= rm -r ./bin/
 endif
 
 all: clean
@@ -51,6 +58,6 @@ prepassets:
 	$(REMASSETS)
 
 clean:
-	rm -r ./bin/
+	$(RMOLDBUILDS)
 	@mkdir ./bin/
 	$(REMOSFILES)
