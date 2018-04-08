@@ -14,7 +14,7 @@ typedef enum {
   WaterIce=21,
   GrassVillage=8,
   GrassTown=9,
-  GrassCastel=10,
+  GrassCastle=10,
   GrassCrops=11,
   SwampWoods=12,
   Swamp=13,
@@ -25,7 +25,7 @@ typedef enum {
   SnowStones=19,
   SnowStonesWoods=20,
   SnowVilage=22,
-  SnowCastel=23,
+  SnowCastle=23,
   Sand=24,
   SandStones=25,
   SandDunes=26,
@@ -33,7 +33,7 @@ typedef enum {
   SandOasis=28,
   SandVillage=29,
   SandCity=30,
-  SandCastel=31,
+  SandCastle=31,
   Jungle=32,
 } TileType;
 
@@ -43,6 +43,7 @@ typedef struct {
   int cave;
   // Tile game properties TODO
   int player; // Player who owns the tile (-1 -> no owner)
+  int ignore_in_update; // 0 -> NO; 1 -> YES
   //int resource_wood;
   //int resource_food;
   //int population;

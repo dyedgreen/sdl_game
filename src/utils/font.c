@@ -6,7 +6,7 @@ typedef struct {
   int x;
 } FontPosition;
 FontPosition findCharPosition(char letter) {
-  // The position to be returned
+  // the position to be returned
   FontPosition pos;
   // Determine the letter position
   if (letter >= 'A' && letter <= 'Z') {
@@ -219,7 +219,7 @@ void renderText(Font* font, SDL_Rect type_case, int char_count, char text[]) {
     target.y = type_case.y + (i / places) * target.h;
     // On line break, skip the draw and skip to new line
     if (text[j] == '\n') {
-      // The -1 accounts for the increment of the for loop
+      // the -1 accounts for the increment of the for loop
       i = (i / places + 1) * places - 1;
       continue;
     }
@@ -232,7 +232,7 @@ void renderText(Font* font, SDL_Rect type_case, int char_count, char text[]) {
       }
     }
     if (next_break > places - i % places && next_break <= places) {
-      // The next word would overflow the box, break here
+      // the next word would overflow the box, break here
       i = (i / places + 1) * places - 1;
       j --; // Account for character not being printed here
       continue;
@@ -280,7 +280,7 @@ void renderAlignedText(Font* font, FontAlignment alignment, SDL_Rect type_case, 
   for (int i = 0, j = 0; j < char_count && i / places < lines; i ++, j++) {
     // On line break, skip the draw and skip to new line
     if (text[j] == '\n') {
-      // The -1 accounts for the increment of the for loop
+      // the -1 accounts for the increment of the for loop
       i = (i / places + 1) * places - 1;
       continue;
     }
@@ -293,12 +293,12 @@ void renderAlignedText(Font* font, FontAlignment alignment, SDL_Rect type_case, 
       }
     }
     if (next_break > places - i % places && next_break <= places) {
-      // The next word would overflow the box, break here
+      // the next word would overflow the box, break here
       i = (i / places + 1) * places - 1;
       j --; // Account for character not being printed here
       continue;
     }
-    // The letter fits at this position, increment the line length
+    // the letter fits at this position, increment the line length
     line_lengths[i / places] ++;
   }
   // Set the char color

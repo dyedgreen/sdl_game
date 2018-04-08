@@ -1,6 +1,6 @@
 // NOTE: The play action is invoked whenever a card is played.
 //       (Essentially, the play action simply moves the play fn
-//       from the game.c to a seperate file.)
+//       from the game.c to a separate file.)
 #pragma once
 #include "../frameworks.h"
 #include "cycle.h"

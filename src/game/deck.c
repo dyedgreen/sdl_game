@@ -7,35 +7,39 @@ Deck* createDeck(SDL_Renderer* renderer) {
   if (deck == NULL) {
     return NULL;
   }
-  // Allocate the cards (hardcoded here, maybe change later?)
+  // Allocate the cards (hard-coded here, maybe change later?)
   // Cheat-Cheat:
   // renderer, picture, anim_speed, title (12), body (250), type, cost, sticky
   // DEBUG
   deck->cards[0] = createCard(renderer,
     "assets/cards/test_card_anim.bmp", 5,
-    "Test 1",
-    "This card ends the turn.",
-    0, 3, 0);
-  deck->cards[1] = createCard(renderer,
-    "assets/cards/test_card_anim.bmp", 5,
-    "Test 2",
-    "This card ends the turn.",
-    0, 1, 0);
-  deck->cards[3] = createCard(renderer,
-    "assets/cards/test_card_anim.bmp", 5,
-    "Test 4", "This card ends the turn.",
-    0, 1, 0);
-  deck->cards[4] = createCard(renderer,
-    "assets/cards/test_card_anim.bmp", 5,
-    "Assasin",
-    "This card ends the turn.",
+    "Debug",
+    "This is a test card.",
     0, 1, 0);
   // SETTLERS CARD
-  deck->cards[2] = createCard(renderer,
+  deck->cards[1] = createCard(renderer,
     "assets/cards/test_card_anim.bmp", 5,
     "Settlers",
-    "A few humble people who want to build a town in a grassland.",
+    "A few people looking to build a new life in a friendly grassland. To build a village, they require trees to be around.",
     2, 2, 0);
+  // TOWN CARD (upgrade settlers)
+  deck->cards[2] = createCard(renderer,
+    "assets/cards/test_card_anim.bmp", 5,
+    "Town",
+    "This upgrades a village (TODO)",
+    4, 3, 0);
+  // CASTLE CARD
+  deck->cards[3] = createCard(renderer,
+    "assets/cards/test_card_anim.bmp", 5,
+    "Castle",
+    "This upgrades a town (TODO)",
+    5, 4, 0);
+  // NOMADS CARD
+  deck->cards[4] = createCard(renderer,
+    "assets/cards/test_card_anim.bmp", 5,
+    "Nomads",
+    "These people wander the dessert with their tents and livestock in a search for an oasis. When they find it, they'll build a city around it.",
+    3, 3, 0);
   // END TURN CARD
   deck->cards[5] = createCard(renderer,
     "assets/cards/test_card_anim.bmp", 5,

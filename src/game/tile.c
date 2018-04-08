@@ -10,6 +10,7 @@ Tile* createTile(TileType type, int cave) {
   tile->type = type;
   tile->cave = cave ? 1 : 0;
   tile->player = -1; // Initially, this belongs to noone!
+  tile->ignore_in_update = 0;
   // Tile game properties (start value will depend on tile type)
   return tile;
 }
@@ -247,13 +248,12 @@ int tileHasBuilding(Tile* tile) {
   switch(tile->type) {
     case GrassVillage:
     case GrassTown:
-    case GrassCastel:
+    case GrassCastle:
     case SnowVilage:
-    case SnowCastel:
+    case SnowCastle:
     case SandOasis:
-    case SandVillage:
     case SandCity:
-    case SandCastel:
+    case SandCastle:
       return 1;
     default:
       return 0;
