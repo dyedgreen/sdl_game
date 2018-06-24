@@ -4,6 +4,7 @@
 #pragma once
 #include "../frameworks.h"
 #include "cycle.h"
+#include "quests.h"
 #include "../game/hand.h"
 #include "../game/enemy.h"
 #include "../game/map.h"

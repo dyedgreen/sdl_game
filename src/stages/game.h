@@ -8,6 +8,7 @@
 #include "../game/map.h"
 #include "../actions/cycle.h" // Progress map cycle (not actually used here -> remove)
 #include "../actions/play.h"  // Play card function
+#include "../actions/quests.h" // Quests (bundled in a Story)
 
 // Game data (state, loaded textures etc...)
 // NOTE: UPDATE IN PLAY.C!
@@ -19,6 +20,7 @@ typedef struct {
   EnemyTurn* enemy_turn;
   Map* map;
   int year; // NOTE: Keeps track of whose turn it is... (year % no. of players)
+  Story* story;
 } GameData;
 
 // Create the game scene

@@ -21,7 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
-ASSET LICENSES:
+ASSET LICENSES AND CREDIT:
 
 Font:
 /misc/font.bmp
@@ -48,3 +48,8 @@ Ui Sprites:
 ------------
 CC0
 https://opengameart.org/content/golden-ui
+
+Map Tiles:
+/map/tiles*.bmp
+---------------
+https://cuddlycolin.itch.io/fantasy-hex-tiles

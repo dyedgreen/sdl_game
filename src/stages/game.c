@@ -34,7 +34,16 @@ Stage* createGameStage(void (*replace)(int), SDL_Window* window, SDL_Renderer* r
   game_data->enemy_turn = createEnemyTurn();
   game_data->map = createMap(renderer, 40, 60);
   game_data->year = 0;
-  if (game_data->font == NULL || game_data->ui == NULL || game_data->theme == NULL || game_data->hand == NULL || game_data->enemy_turn == NULL || game_data->map == NULL) {
+  game_data->story = createStory();
+  if (
+    game_data->font == NULL ||
+    game_data->ui == NULL ||
+    game_data->theme == NULL ||
+    game_data->hand == NULL ||
+    game_data->enemy_turn == NULL ||
+    game_data->map == NULL ||
+    game_data->story == NULL
+  ) {
     destroyGameStage(stage);
     return NULL;
   }
@@ -60,6 +69,7 @@ void destroyGameStage(Stage* stage) {
   destroyHand(game_data->hand);
   destroyEnemyTurn(game_data->enemy_turn);
   destroyMap(game_data->map);
+  destroyStory(game_data->story);
   // Free the game data
   free(stage->scene->data);
   // Destroy the Stage
@@ -120,11 +130,19 @@ void gameUpdate(Scene* scene, int frame) {
     .y = 0,
   };
   renderMap(scene->renderer, game_data->map, map_target);
-  // Render the ui FIXME: Add actual quest system here!
+  // Render the ui
   game_data->ui->window.w = window_w;
   game_data->ui->window.h = window_h;
-  renderUiQuest(game_data->ui, Warning, "Hello World!", "Quest 1/5\n\nThis is your first quest. Play all the cards in your hand to progress 10 years!\0", game_data->year * 10);
-  SDL_Rect ui_year_position = { .x = scaleUiLength(game_data->ui, UI_QUEST_PADDING), .y = scaleUiLength(game_data->ui, UI_QUEST_PADDING) };
+  renderUiQuest(
+    game_data->ui, Warning,
+    game_data->story->quests[game_data->story->current_quest].title,
+    game_data->story->quests[game_data->story->current_quest].text,
+    game_data->story->quests[game_data->story->current_quest].progress
+  );
+  SDL_Rect ui_year_position = {
+    .x = scaleUiLength(game_data->ui, UI_QUEST_PADDING),
+    .y = scaleUiLength(game_data->ui, UI_QUEST_PADDING)
+  };
   char ui_year_text[] = "____\0";
   sprintf(ui_year_text, "%d", game_data->year + GAME_YEAR_ZERO);
   renderUiLabel(game_data->ui, ui_year_position, ui_year_text);
@@ -199,8 +217,8 @@ void gameUpdate(Scene* scene, int frame) {
   // ui_test = renderUiBox(game_data->ui, ui_test);
   // renderUiIcon(game_data->ui, ui_test, Warning);
   // Set surrounding tiles to be highlighted
-  //game_data->map->tile_highlighted = findMapTileNeighbour(game_data->map, frame / 10 % 6, game_data->map->tile_hovered);
-  //game_data->map->tile_highlighted = game_data->map->tile_hovered;
+  // game_data->map->tile_highlighted = findMapTileNeighbour(game_data->map, frame / 10 % 6, game_data->map->tile_hovered);
+  // game_data->map->tile_highlighted = game_data->map->tile_hovered;
   // Render max outline
   SDL_SetRenderDrawColor(scene->renderer, 255, 0, 255, 1);
   //SDL_RenderDrawRect(scene->renderer, &map_target);

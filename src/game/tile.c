@@ -20,6 +20,7 @@ void destroyTile(Tile* tile) {
   free(tile);
 }
 
+// Used for map generation
 TileType determineTileType(float biome, float height, float nature) {
   // Override - water
   if (height < -0.5) {
@@ -90,9 +91,9 @@ TileType determineTileType(float biome, float height, float nature) {
       }
     } else {
       if (nature > 0.34) {
-        return GrassWoods;
+        return rand() % 100 > 98 ? Ruins : GrassWoods;
       } else if (nature > -0.1) {
-        return GrassLightWoods;
+        return rand() % 100 > 99 ? Ruins : GrassLightWoods;
       } else {
         return Grass;
       }

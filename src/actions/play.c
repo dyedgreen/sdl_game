@@ -16,6 +16,7 @@ typedef struct {
   EnemyTurn* enemy_turn;
   Map* map;
   int year;
+  Story* story;
 } GameData;
 
 
@@ -164,7 +165,7 @@ int actionPlayCard(int card_type, int player, void* game_data_payload) {
       game_data->map->tiles[game_data->map->tile_hovered]->player = player;
       break;
     // TOWN CARD
-    case Town: 
+    case Town:
       // Remove one wood
       for (int i = 0, removed = 0, neighbour; i < 6 && removed < 1; i ++) {
         neighbour = findMapTileNeighbour(game_data->map, i, game_data->map->tile_hovered);

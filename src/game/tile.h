@@ -35,6 +35,11 @@ typedef enum {
   SandCity=30,
   SandCastle=31,
   Jungle=32,
+  PortLeft=36,
+  PortRight=37,
+  Lighthouse=38,
+  Ruins=39,
+  Cemetery=40,
 } TileType;
 
 typedef struct {

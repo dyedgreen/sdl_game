@@ -9,7 +9,7 @@ typedef struct {
   int frame; // This is the current frame in the animation
   int frame_count; // Is determined automatically (can be read, of animation)
   SDL_RendererFlip flip; // This can be set from the outside to flip the rendered image
-  double rotation; // This can be set fron the outside to rotate the rendered image
+  double rotation; // This can be set from the outside to rotate the rendered image
   SDL_Texture* texture;
 } Sprite;
 
