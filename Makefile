@@ -4,7 +4,7 @@ PNGASSETS=$(wildcard ./assets/*.png ./assets/**/*.png)
 BMPTARGETS=$(patsubst %.png,%.bmp,$(PNGASSETS))
 PREPASSETS=
 REMASSETS=
-LIBS=-framework SDL2
+LIBS=$(shell sdl2-config --static-libs)
 CC=gcc
 
 OSFILES=$(wildcard .DS_Store ./src/.DS_Store ./src/**/.DS_Store ./assets/.DS_Store ./assets/**/.DS_Store)
